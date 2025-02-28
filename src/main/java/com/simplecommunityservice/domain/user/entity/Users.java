@@ -1,11 +1,14 @@
 package com.simplecommunityservice.domain.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Users {
 
     @Id
@@ -22,4 +25,12 @@ public class Users {
     @Setter
     @Column(nullable = false, length = 30)
     private String nickname;
+
+    @Builder
+    public Users(String userId, String password, String email, String nickname) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+    }
 }
