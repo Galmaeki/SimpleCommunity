@@ -20,7 +20,6 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final SecretKey key;
-    private final String secret;
     private final Long expiredTimeMills;
     private final UserDetailsService userDetailsService;
 
@@ -29,7 +28,6 @@ public class JwtTokenProvider {
     ) {
         this.key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
-        this.secret = secret;
         this.expiredTimeMills = expiredTimeMills;
         this.userDetailsService = userDetailsService;
     }
@@ -44,7 +42,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token);
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -57,12 +55,13 @@ public class JwtTokenProvider {
     }
 
     public String getUserId(String token) {
-        return Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload()
+                .getSubject();
     }
 
     public String generateToken(Users user) {
         return Jwts.builder()
-                .setSubject(user.getUserId())
+                .subject(user.getUserId())
                 .expiration(new Date(System.currentTimeMillis() + expiredTimeMills))
                 .signWith(key)
                 .compact();
