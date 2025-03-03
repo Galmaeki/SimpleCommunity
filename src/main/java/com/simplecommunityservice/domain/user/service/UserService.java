@@ -6,6 +6,8 @@ import com.simplecommunityservice.domain.user.dto.ResponseDuplicate;
 import com.simplecommunityservice.domain.user.dto.ResponseUser;
 import com.simplecommunityservice.domain.user.entity.Users;
 import com.simplecommunityservice.domain.user.repository.UserRepository;
+import com.simplecommunityservice.exception.ApplicationException;
+import com.simplecommunityservice.exception.ErrorCode;
 import com.simplecommunityservice.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,10 +41,10 @@ public class UserService {
 
     public String login(RequestLogin login) {
         Users user = userRepository.findByUserId(login.userid())
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다"));
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(login.password(), user.getPassword()))
-            throw new RuntimeException("유저를 찾을 수 없습니다");
+            throw new ApplicationException(ErrorCode.USER_NOT_FOUND);
 
         return jwtTokenProvider.generateToken(user);
     }
@@ -53,23 +55,23 @@ public class UserService {
 
     public ResponseUser getUserInfo(RequestLogin login) {
         return toResponseUser(userRepository.findByUserId(login.userid()).orElseThrow(
-                () -> new RuntimeException("유저를 찾을 수 없습니다"))
-        );
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
+        ));
     }
 
     public ResponseUser getUserInfo(String userId) {
         return toResponseUser(userRepository.findByUserId(userId).orElseThrow(
-                () -> new RuntimeException("유저를 찾을 수 없습니다")
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         ));
     }
 
     public void changeEmail(String pathUserId, String loginUserId, String email) {
         Users targetUser = userRepository.findByUserId(pathUserId).orElseThrow(
-                () -> new RuntimeException("유저를 찾을 수 없습니다")
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         );
 
         if (targetUser.getUserId().equals(loginUserId))
-            throw new RuntimeException("권한이 없습니다");
+            throw new ApplicationException(ErrorCode.UNAUTHORIZED_ACCESS);
 
         targetUser.setEmail(email);
 
@@ -78,11 +80,11 @@ public class UserService {
 
     public void changeNickname(String pathUserId, String loginUserId, String nickname) {
         Users targetUser = userRepository.findByUserId(pathUserId).orElseThrow(
-                () -> new RuntimeException("유저를 찾을 수 없습니다")
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         );
 
         if (targetUser.getUserId().equals(loginUserId))
-            throw new RuntimeException("권한이 없습니다");
+            throw new ApplicationException(ErrorCode.UNAUTHORIZED_ACCESS);
 
         targetUser.setNickname(nickname);
 
@@ -91,11 +93,11 @@ public class UserService {
 
     public void changePassword(String pathUserId, String loginUserId, String password) {
         Users targetUser = userRepository.findByUserId(pathUserId).orElseThrow(
-                () -> new RuntimeException("유저를 찾을 수 없습니다")
+                () -> new ApplicationException(ErrorCode.USER_NOT_FOUND)
         );
 
         if (targetUser.getUserId().equals(loginUserId))
-            throw new RuntimeException("권한이 없습니다");
+            throw new ApplicationException(ErrorCode.UNAUTHORIZED_ACCESS);
 
         targetUser.setPassword(passwordEncoder.encode(password));
 

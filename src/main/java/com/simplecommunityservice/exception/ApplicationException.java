@@ -7,11 +7,11 @@ public class ApplicationException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    protected ApplicationException(ErrorCode errorCode) {
+    public ApplicationException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 
-    protected ApplicationException(ErrorCode errorCode, String message) {
+    public ApplicationException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
