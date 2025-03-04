@@ -18,27 +18,27 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<ResponsePostId> postPost(@RequestBody RequestPostPost post){
+    public ResponseEntity<ResponsePostId> postPost(@RequestBody RequestPostPost post) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return ResponseEntity.ok(postService.postPost(post,user.getUsername()));
+        return ResponseEntity.ok(postService.postPost(post, user.getUsername()));
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<Void> updatePost(@PathVariable Long postId, @RequestBody RequestPostPost post){
+    public ResponseEntity<Void> updatePost(@PathVariable Long postId, @RequestBody RequestPostPost post) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        postService.updatePost(postId,post,user.getUsername());
+        postService.updatePost(postId, post, user.getUsername());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId){
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        postService.deletePost(postId,user.getUsername());
+        postService.deletePost(postId, user.getUsername());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();

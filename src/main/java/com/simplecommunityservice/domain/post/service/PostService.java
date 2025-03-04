@@ -9,7 +9,6 @@ import com.simplecommunityservice.domain.user.repository.UserRepository;
 import com.simplecommunityservice.exception.ApplicationException;
 import com.simplecommunityservice.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +34,7 @@ public class PostService {
                 () -> new ApplicationException(ErrorCode.POST_NOT_FOUND)
         );
 
-        if(!post.getUser().getUserId().equals(username))
+        if (!post.getUser().getUserId().equals(username))
             throw new ApplicationException(ErrorCode.UNAUTHORIZED_ACCESS);
 
         post.setPost(requestPost);
@@ -48,7 +47,7 @@ public class PostService {
                 () -> new ApplicationException(ErrorCode.POST_NOT_FOUND)
         );
 
-        if(!post.getUser().getUserId().equals(username))
+        if (!post.getUser().getUserId().equals(username))
             throw new ApplicationException(ErrorCode.UNAUTHORIZED_ACCESS);
 
         postRepository.delete(post);
