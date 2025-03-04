@@ -24,11 +24,16 @@ public class Post extends BaseEntity {
     private String title;
     private String content;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Users user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostLike> likes;
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 
     public Post(RequestPostPost post, Users user) {
         this.title = post.title();
@@ -38,7 +43,7 @@ public class Post extends BaseEntity {
         this.likes = new ArrayList<>();
     }
 
-    public void setPost(RequestPostPost post){
+    public void setPost(RequestPostPost post) {
         this.title = post.title();
         this.content = post.content();
     }
