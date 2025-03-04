@@ -26,8 +26,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApplicationException> handlingApplicationException(ApplicationException e) {
+    public ResponseEntity<ResponseException> handlingApplicationException(ApplicationException e) {
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-                .body(new ApplicationException(e.getErrorCode(), e.getMessage()));
+                .body(new ResponseException(e.getErrorCode().getHttpStatus().value(), e.getMessage()));
     }
 }
