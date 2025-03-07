@@ -10,6 +10,7 @@ public enum ErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "경로가 올바르지 않습니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다."),
+    DUPLICATED(HttpStatus.CONFLICT, "중복되는 요청입니다."),
 
     // USER
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "사용자를 찾을 수 없습니다."),

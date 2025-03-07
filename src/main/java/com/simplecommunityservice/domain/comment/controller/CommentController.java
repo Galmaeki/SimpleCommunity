@@ -42,4 +42,24 @@ public class CommentController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PostMapping("/comments/{commentId}/likes")
+    public ResponseEntity<Void> likeComment(@PathVariable Long commentId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        commentService.likeComment(commentId, user.getUsername());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @DeleteMapping("/comments/{commentId}/likes")
+    public ResponseEntity<Void> cancelCommentLike(@PathVariable Long commentId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        commentService.cancelCommentLike(commentId, user.getUsername());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 }

@@ -28,8 +28,6 @@ public class Post extends BaseEntity {
     private Users user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PostLike> likes;
 
     public void addComment(Comment comment) {
         comments.add(comment);
@@ -40,7 +38,6 @@ public class Post extends BaseEntity {
         this.content = post.content();
         this.user = user;
         this.comments = new ArrayList<>();
-        this.likes = new ArrayList<>();
     }
 
     public void setPost(RequestPostPost post) {

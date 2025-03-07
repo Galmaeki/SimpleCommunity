@@ -43,4 +43,25 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
+    @PostMapping("/{postId}/likes")
+    public ResponseEntity<Void> likePost(@PathVariable Long postId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        postService.likePost(postId, user.getUsername());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @DeleteMapping("/{postId}/likes")
+    public ResponseEntity<Void> cancelLike(@PathVariable Long postId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        postService.cancelLike(postId, user.getUsername());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
 }
