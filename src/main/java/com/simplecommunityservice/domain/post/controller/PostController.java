@@ -1,9 +1,14 @@
 package com.simplecommunityservice.domain.post.controller;
 
 import com.simplecommunityservice.domain.post.dto.RequestPostPost;
+import com.simplecommunityservice.domain.post.dto.ResponsePostDetail;
 import com.simplecommunityservice.domain.post.dto.ResponsePostId;
+import com.simplecommunityservice.domain.post.dto.ResponsePostList;
 import com.simplecommunityservice.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,4 +69,13 @@ public class PostController {
                 .build();
     }
 
+    @GetMapping
+    public ResponseEntity<Page<ResponsePostList>> postList(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(postService.postList(pageable));
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<ResponsePostDetail> postDetail(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.postDetail(postId));
+    }
 }
